@@ -2,6 +2,16 @@ const express = require('express');
 const router = express.Router();
 const { body} = require("express-validator");
 const userController = require('../controllers/user.controller');
+const authMiddleware = require('../middlewares/auth.middleware');
+
+// Add GET route for login page at root path (will be accessible at /users/)
+router.get('/', userController.getLoginPage);
+
+// Add GET route specifically for /login path (will be accessible at /users/login)
+router.get('/login', userController.getLoginPage);
+
+// Add GET route for user profile with authentication
+router.get('/profile', authMiddleware.authUser, userController.getUserProfile);
 
 router.post('/register',[
     body('email').isEmail().withMessage('Invalid email'),
@@ -10,5 +20,12 @@ router.post('/register',[
 ],
 userController.registerUser);
 
+router.post('/login', [
+    body('email').isEmail().withMessage('Invalid Email'),
+    body('password').isLength({min:6}).withMessage('Password must be at least 6 characters long')
+],
+userController.loginUser);
+
+router.get('/logout', authMiddleware.authUser, userController.logoutUser);
 
 module.exports = router;

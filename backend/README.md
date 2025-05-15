@@ -62,4 +62,91 @@ Registers a new user in the system.
 | Status Code | Description |
 |-------------|-------------|
 | 201 | User successfully registered |
-| 400 | Validation error, invalid input data | 
+| 400 | Validation error, invalid input data |
+
+## User Login
+`POST /users/login`
+
+Authenticates a user and provides a JWT token.
+
+### Request Body
+```json
+{
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+```
+
+### Request Parameters
+
+| Field | Type | Description | Validation |
+|-------|------|-------------|------------|
+| email | String | User's email address | Required, must be a valid email format |
+| password | String | User's password | Required, minimum 6 characters |
+
+### Responses
+
+#### Success (200 OK)
+```json
+{
+  "token": "jwt-token-here",
+  "user": {
+    "_id": "user-id",
+    "email": "john.doe@example.com",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    }
+  }
+}
+```
+
+#### Error (401 Unauthorized)
+```json
+{
+  "error": "Invalid email or password"
+}
+```
+
+#### Error (400 Bad Request)
+```json
+{
+  "errors": [
+    {
+      "value": "invalid-email",
+      "msg": "Invalid Email",
+      "param": "email",
+      "location": "body"
+    }
+  ]
+}
+```
+
+### Status Codes
+
+| Status Code | Description |
+|-------------|-------------|
+| 200 | User successfully authenticated |
+| 400 | Validation error, invalid input data |
+| 401 | Authentication failed |
+| 500 | Server error |
+
+## Login Page
+`GET /users/login` or `GET /users/`
+
+Returns the login page.
+
+### Responses
+
+#### Success (200 OK)
+```json
+{
+  "message": "Login page endpoint"
+}
+```
+
+### Status Codes
+
+| Status Code | Description |
+|-------------|-------------|
+| 200 | Login page successfully retrieved | 
