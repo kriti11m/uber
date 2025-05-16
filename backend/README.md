@@ -273,3 +273,95 @@ Returns the login page.
 | Status Code | Description |
 |-------------|-------------|
 | 200 | Login page successfully retrieved | 
+
+## Captain Registration
+`POST /captains/register`
+
+Registers a new captain in the system.
+
+### Request Body
+```json
+{
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "captain.john@example.com",
+  "password": "password123",
+  "vehicle": {
+    "color": "Red",
+    "plate": "ABC123",
+    "vehicleType": "car",
+    "capacity": 4
+  }
+}
+```
+
+### Request Parameters
+
+| Field | Type | Description | Validation |
+|-------|------|-------------|------------|
+| fullname.firstname | String | Captain's first name | Required, minimum 3 characters |
+| fullname.lastname | String | Captain's last name | Optional, minimum 3 characters if provided |
+| email | String | Captain's email address | Required, must be a valid email format |
+| password | String | Captain's password | Required, minimum 6 characters |
+| vehicle.color | String | Vehicle color | Required, minimum 3 characters |
+| vehicle.plate | String | Vehicle license plate | Required, minimum 3 characters |
+| vehicle.vehicleType | String | Type of vehicle | Required, must be one of: 'car', 'bike', 'auto' |
+| vehicle.capacity | Number | Vehicle passenger capacity | Required, min: 1, max: 10 |
+
+### Responses
+
+#### Success (201 Created)
+```json
+{
+  "token": "jwt-token-here",
+  "captain": {
+    "_id": "captain-id",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "captain.john@example.com",
+    "status": "inactive",
+    "vehicle": {
+      "color": "Red",
+      "plate": "ABC123",
+      "vehicleType": "car",
+      "capacity": 4
+    },
+    "location": {
+      "lat": null,
+      "lng": null
+    }
+  }
+}
+```
+
+#### Error (400 Bad Request) - Validation Error
+```json
+{
+  "errors": [
+    {
+      "value": "",
+      "msg": "Firstname is required",
+      "param": "fullname.firstname",
+      "location": "body"
+    }
+  ]
+}
+```
+
+#### Error (400 Bad Request) - Captain Already Exists
+```json
+{
+  "message": "Captain already exists"
+}
+```
+
+### Status Codes
+
+| Status Code | Description |
+|-------------|-------------|
+| 201 | Captain successfully registered |
+| 400 | Validation error or captain already exists | 

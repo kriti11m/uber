@@ -6,6 +6,10 @@ module.exports.hashPassword = async (password) => {
     return await bcrypt.hash(password, salt);
 };
 
+module.exports.comparePassword = async (plainPassword, hashedPassword) => {
+    return await bcrypt.compare(plainPassword, hashedPassword);
+};
+
 module.exports.createCaptain = async ({
     firstname,
     lastname,
