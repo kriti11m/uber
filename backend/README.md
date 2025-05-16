@@ -131,6 +131,129 @@ Authenticates a user and provides a JWT token.
 | 401 | Authentication failed |
 | 500 | Server error |
 
+## User Profile
+`GET /users/profile`
+
+Retrieves the authenticated user's profile. Requires authentication.
+
+### Headers
+```
+Authorization: Bearer jwt-token-here
+```
+or
+Cookie with token
+
+### Responses
+
+#### Success (200 OK)
+```json
+{
+  "success": true,
+  "profile": {
+    "_id": "user-id",
+    "email": "john.doe@example.com",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    }
+  }
+}
+```
+
+#### Error (401 Unauthorized)
+```json
+{
+  "error": "Unauthorized - No token provided"
+}
+```
+or
+```json
+{
+  "error": "Unauthorized - Token has been invalidated"
+}
+```
+or
+```json
+{
+  "error": "Unauthorized - User not found"
+}
+```
+or
+```json
+{
+  "error": "Unauthorized - Invalid token"
+}
+```
+
+### Status Codes
+
+| Status Code | Description |
+|-------------|-------------|
+| 200 | Profile successfully retrieved |
+| 401 | Unauthorized - invalid or missing token |
+| 500 | Server error |
+
+## User Logout
+`GET /users/logout`
+
+Logs out the currently authenticated user. Requires authentication.
+
+### Headers
+```
+Authorization: Bearer jwt-token-here
+```
+or
+Cookie with token
+
+### Responses
+
+#### Success (200 OK)
+```json
+{
+  "message": "Logged out successfully"
+}
+```
+
+#### Error (401 Unauthorized)
+```json
+{
+  "error": "Unauthorized - No token provided"
+}
+```
+or
+```json
+{
+  "error": "Unauthorized - Token has been invalidated"
+}
+```
+or
+```json
+{
+  "error": "Unauthorized - User not found"
+}
+```
+or
+```json
+{
+  "error": "Unauthorized - Invalid token"
+}
+```
+
+#### Error (500 Server Error)
+```json
+{
+  "error": "Server error during logout"
+}
+```
+
+### Status Codes
+
+| Status Code | Description |
+|-------------|-------------|
+| 200 | User successfully logged out |
+| 401 | Unauthorized - invalid or missing token |
+| 500 | Server error |
+
 ## Login Page
 `GET /users/login` or `GET /users/`
 
